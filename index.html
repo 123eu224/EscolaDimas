@@ -1,0 +1,715 @@
+ <!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Cidade Verde do Amanhã</title>
+
+  <style>
+
+    body {
+
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+      background: linear-gradient(to bottom right,#143c3c, #1c5959);
+
+      color: #2f5d62;
+
+      margin: 0;
+
+      padding: 20px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      min-height: 100vh;
+
+    }
+
+    h1 {
+
+      margin-bottom: 10px;
+
+      font-weight: 700;
+
+      font-size: 3rem;
+
+      text-align: center;
+
+      color: #25594c;
+
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+
+    }
+
+    #description {
+
+      max-width: 850px;
+
+      font-size: 1.3rem;
+
+      line-height: 1.7;
+
+      color: #3c7671;
+
+      margin-bottom: 30px;
+
+      text-align: center;
+
+      background: #e6f4ec;
+
+      border-left: 6px solid #3c9679;
+
+      padding: 20px;
+
+      border-radius: 19px;
+
+    }
+
+    #buttonsContainer {
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 15px;
+
+      max-width: 850px;
+
+      justify-content: center;
+
+    }
+
+    button {
+
+      background-color: #3c9679;
+
+      border: none;
+
+      border-radius: 99px;
+
+      color: white;
+
+      padding: 16px 24px;
+
+      font-size: 1.1rem;
+
+      cursor: pointer;
+
+      box-shadow: 0 6px 10px rgba(60, 150, 121, 0.3);
+
+      transition: all 0.3s ease;
+
+      min-width: 240px;
+
+      font-weight: 600;
+
+      letter-spacing: 0.5px;
+
+    }
+
+    button:hover {
+
+      background-color: #2e6b56;
+
+      transform: scale(1.03);
+
+    }
+
+    .mini-buttons {
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 10px;
+
+      margin-top: 20px;
+
+      justify-content: center;
+
+    }
+
+    .mini-buttons button {
+
+      min-width: 180px;
+
+      font-size: 1rem;
+
+      padding: 10px 18px;
+
+      border-radius: 12px;
+
+    }
+
+#content {
+
+      background: #ffffff;
+
+      border-radius: 14px;
+
+      padding: 35px 40px;
+
+      margin-top: 35px;
+
+      max-width: 850px;
+
+      box-shadow: 0 0 20px rgba(47, 93, 98, 0.2);
+
+      font-size: 1.2rem;
+
+      line-height: 1.8;
+
+      display: none;
+
+      text-align: justify;
+
+      color: #2e4d45;
+
+    }
+
+    #backBtn {
+
+      margin-top: 25px;
+
+      background-color: #66b89f;
+
+      width: 160px;
+
+      font-size: 1.05rem;
+
+      padding: 12px 18px;
+
+      border-radius: 13px;
+
+      font-weight: bold;
+
+      display: none;
+
+      cursor: pointer;
+
+      box-shadow: 0 4px 8px rgba(60, 150, 121, 0.25);
+
+      transition: background-color 0.3s ease;
+
+    }
+
+    #backBtn:hover {
+
+      background-color: #4e8a73;
+
+    }
+
+    .video-container, .image-container {
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 15px;
+
+      justify-content: center;
+
+      margin-top: 20px;
+
+    }
+
+    .video-container iframe, .image-container img {
+
+      flex: 1 1 300px;
+
+      height: 400px;
+
+      border-radius: 14px;
+
+      border: none;
+
+      object-fit: cover;
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <h1>Cidade Verde do Amanhã</h1>
+
+  <div id="description">
+
+    Um projeto inovador que transforma a escola e a cidade em um modelo de sustentabilidade, regeneração e bem-estar coletivo. Clique nos temas e inspire-se com ideias que podem mudar o mundo ao seu redor.
+
+  </div>
+
+  <div id="buttonsContainer">
+
+    <button data-topic="reflorestamento">🌳 Reflorestamento</button>
+
+    <button data-topic="jornal">📰 Jornal Conexão Dimas</button>
+
+    <button data-topic="horta">🌿 Horta Agroecológica</button>
+
+    <button data-topic="reciclagem">♻️ Coleta Dimas</button>
+
+    <button data-topic="energia">☀️ Energia Limpa</button>
+
+    <button data-topic="compostagem">🌱 Compostagem Ecológica</button>
+
+  </div>
+
+  <div id="content"></div>
+
+  <button id="backBtn">Voltar</button>
+
+<script>
+
+    const buttonsContainer = document.getElementById('buttonsContainer');
+
+    const content = document.getElementById('content');
+
+    const backBtn = document.getElementById('backBtn');
+
+    const description = document.getElementById('description');
+
+    const title = document.querySelector('h1');
+
+    const explanations = {
+
+      reflorestamento: {
+
+        text: `Reflorestamento é uma ação importante para ajudar a recuperar áreas que foram degradadas, melhorar a qualidade de vida das pessoas e proteger o meio ambiente.
+
+Pensando nisso, propomos um projeto de reflorestamento no Bairro Vila São Vicente, com o objetivo de transformar espaços vazios ou abandonados em áreas verdes, vivas e produtivas. Nosso bairro tem enfrentado problemas como o calor excessivo, a poluição do ar e a falta de áreas sombreadas e naturais.
+
+Esse projeto será uma solução prática e eficiente para lidar com essas questões. Com o plantio de árvores nativas e frutíferas, podemos ajudar a:
+
+- Aumentar a cobertura de plantas na região;
+
+- Atrair os animais que vivem por aqui;
+
+- Melhorar o solo e os recursos de água;
+
+- Criar espaços de convivência e lazer para toda a comunidade.
+
+Por meio do reflorestamento, nosso objetivo é reduzir a temperatura, melhorar a qualidade do ar, ajudar a equilibrar o meio ambiente, manter a umidade, evitar a erosão e incentivar a comunidade a se conectar com a natureza e aprender sobre o meio ambiente.
+
+Além disso, esse projeto será realizado com a participação dos moradores, das escolas locais e de voluntários, fortalecendo o sentimento de pertencimento e a responsabilidade de todos com o lugar onde vivemos.
+
+Com esse esforço de reflorestamento, a Vila São Vicente pode se transformar em um bairro mais sustentável, onde natureza e comunidade caminham juntas em direção a um futuro mais verde e saudável para todos.
+        
+        <p style="text-align: center;">
+  📍 Nesse local será feito o reflorestamento
+</p>`,
+
+        videos: [
+
+          "https://player.vimeo.com/video/1099759266?h=607ebe8dcd",
+
+          "https://player.vimeo.com/video/1099763752?h=806d43c7ac"
+
+        ],
+
+        subtopics: {
+
+          vila: `🏘️ Bairro Vila São Vicente<br><br>
+
+<strong>O QUE IREMOS FAZER?</strong><br>
+
+Com a parceria da prefeitura e da secretária do meio ambiente, elaboramos uma lista de árvores que podem ser plantadas em áreas vulneráveis, do bairro Vila São Vicente, com o intuito de reduzir o calor extremo e dos ruídos externos.<br><br>
+
+<strong>COMO IREMOS FAZER?</strong><br>
+
+Pesquisas de melhores árvores para produzir sombra e reduzir o calor.<br><br>
+
+<strong>QUEM?</strong><br>
+
+Estudantes da escola Dimas;<br>
+
+Comunidade;<br>
+
+Prefeitura;<br>
+
+Secretária do meio ambiente<br><br>
+
+<strong>QUANDO?</strong><br>
+
+Até fevereiro de 2026.`,
+
+          arvore: `🌳 Árvore/Papel<br><br>
+
+Reutilizar papel em plantações de frutas é uma prática simples, acessível e que traz muitos benefícios para o meio ambiente. Quando usamos o papel dessa forma na agricultura, especialmente em áreas de cultivo de frutas, ele se torna uma grande aliada na busca por sustentabilidade e no cuidado com o solo.<br><br>
+
+Muitas vezes, o papel que descartamos como lixo pode ser reaproveitado de maneira criativa e útil nas plantações. Ao ser triturado ou picado, ele pode servir como uma cobertura orgânica (mulching), ajudando a proteger o solo ao redor das plantas e árvores frutíferas.<br><br>
+
+<strong>Vantagens:</strong><br>
+
+- Impedir que plantas daninhas cresçam.<br>
+
+- Manter a umidade do solo por mais tempo.<br>
+
+- Melhorar a fertilidade do solo.<br>
+
+- Diminuir a quantidade de resíduos sólidos gerados.<br>
+
+- Proteger as raízes das plantas.<br><br>
+
+Com a prática de reutilização de papel, transformamos em uma atividade educativa e comunitária, envolvendo escolas, famílias e moradores na coleta de papéis usados.`,
+
+          jardim: `🏫 Jardim da Escola<br><br>
+
+Reflorestar o jardim é uma prática que traz vida e equilíbrio ao ambiente, oferecendo sombra, purificando o ar, atraindo pássaros e polinizadores, além de melhorar sua aparência. Plantar espécies nativas fortalece a biodiversidade e protege o solo contra erosões.<br><br>
+
+Essa prática também tem valor educativo, ensinando crianças e adultos sobre a importância da natureza e promovendo a responsabilidade ecológica.<br><br>
+
+<strong>Problema identificado:</strong><br>
+
+A escola precisa revitalizar e reflorestar seu jardim, que está ocioso e sem vida. O objetivo é recuperar e manter um ecossistema saudável. A iniciativa busca envolver alunos, pais e a comunidade na instalação de mudas de crescimento rápido, tornando o espaço mais bonito, vivo e propício para lazer, intervalos, projetos e piqueniques, contribuindo para uma escola mais atrativa e sustentável.<br><br>
+
+<div class="image-container">
+  <img src="https://i.imgur.com/4lRRIXB.jpeg" alt="Jardim da Escola">
+</div>`
+
+        }
+
+      },
+
+      jornal: {
+
+        text: `O Jornal Conexão Dimas é feito pelos alunos e registra ações sustentáveis, eventos escolares, entrevistas e curiosidades ecológicas.`,
+
+        images: [
+
+          "https://i.imgur.com/we5T93q.jpeg",
+
+          "https://i.imgur.com/R86GW92.jpeg",
+
+          "https://i.imgur.com/Y77tiF6.jpeg",
+
+          "https://i.imgur.com/Vgw40hD.jpeg",
+
+          "https://i.imgur.com/D1GA09s.jpeg"
+
+        ]
+
+      },
+
+horta: {
+
+        text: `A horta agroecológica ensina os alunos a cultivar alimentos saudáveis respeitando a natureza.`,
+
+        subtopics: {
+
+          cano: `🧰 <strong>Suspensa com Canos de PVC</strong><br><br>
+
+<strong>1. O que observamos</strong><br><br>
+Em áreas urbanas, o espaço para plantar muitas vezes é bem limitado. Pensando nisso, uma ideia bem prática e sustentável é usar canos de PVC que seriam descartados para criar hortas suspensas. Dessa forma, podemos aproveitar paredes e espaços verticais, além de contribuir com a reciclagem, promover a educação ambiental e ainda trazer benefícios à nossa saúde.<br><br>
+
+<strong>2. A ação escolhida</strong><br><br>
+Vamos montar uma horta suspensa usando canos de PVC usados, promovendo a sustentabilidade e incentivando uma alimentação mais saudável.<br><br>
+
+<strong>3. Objetivos dessa iniciativa</strong><br><br>
+<div style="display: flex; flex-direction: column; gap: 10px; margin: 10px 0;">
+  <div style="display: flex; align-items: flex-start; gap: 10px;">
+    <div>✅</div>
+    <div>Reaproveitar materiais plásticos que normalmente seriam descartados.</div>
+  </div>
+  <div style="display: flex; align-items: flex-start; gap: 10px;">
+    <div>✅</div>
+    <div>Incentivar o cultivo de alimentos orgânicos.</div>
+  </div>
+  <div style="display: flex; align-items: flex-start; gap: 10px;">
+    <div>✅</div>
+    <div>Estimular a consciência ecológica e a importância de uma alimentação equilibrada.</div>
+  </div>
+  <div style="display: flex; align-items: flex-start; gap: 10px;">
+    <div>✅</div>
+    <div>Decorar ambientes urbanos e ajudar a melhorar o microclima local.</div>
+  </div>
+</div>
+
+<strong>Quanto vai custar e o que vamos precisar?</strong><br><br>
+Para colocar esse projeto em prática, a boa notícia é que muita coisa a gente consegue reaproveitar ou conseguir por doação, o que já ajuda bastante!<br><br>
+
+<strong>O que vamos precisar:</strong><br><br>
+
+🔧 <strong>Materiais:</strong><br>
+• Canos de PVC com diâmetro entre 75mm e 100mm. Dá pra reaproveitar de obras ou reformas.<br>
+Tampas para os canos, se a gente quiser um acabamento mais bonito (isso é opcional).<br>
+• Suportes de metal ou madeira para prender na parede ou em alguma estrutura.<br><br>
+
+🛠️ <strong>Ferramentas:</strong><br>
+• Serra ou serrote, para a gente cortar os canos no tamanho certo..<br>
+• Furadeira com serra copo, que é usada pra fazer os furinhos onde as plantas vão crescer.<br>
+• Lixa, caso precise dar um acabamento mais certinho nos canos.<br><br>
+
+🎨 <strong>Detalhes que deixam o projeto ainda mais bonito (opcional):</strong><br>
+• Tinta atóxica, que é própria pra esse tipo de uso, se a gente quiser deixar os canos coloridos e o visual mais alegre.<br><br>
+
+🌱 <strong>Agora vem a parte mais gostosa: as plantas!</strong><br>
+• Terra boa e adubada, com composto orgânico, pra garantir que as hortaliças cresçam saudáveis.<br>
+• Mudas ou sementes de coisas gostosas como alface, rúcula, manjericão, cebolinha e outras.<br>
+• E, se quiser facilitar, dá pra montar um sistema de irrigação simples com garrafas PET ou outro jeito prático de molhar as plantinhas.`
+
+        }
+
+      },
+
+      reciclagem: {
+
+        text: `A Coleta Dimas promove a separação e destinação correta dos resíduos.`,
+
+        subtopics: {
+
+          oleo: `Na Escola Dimas, a coleta de óleo de cozinha usado é feita de forma organizada para evitar que o óleo seja descartado no ralo ou no lixo comum, o que pode prejudicar o meio ambiente. Os alunos e funcionários podem levar o óleo que usaram em casa, colocando-o em garrafas PET bem fechadas. Essas garrafas devem ser entregues no ponto de coleta da escola, localizado na secretaria, em uma sala especialmente destinada a isso. Quem leva o óleo também pode fazer uma troca: entrega o óleo e leva um detergente. Depois, esse óleo é enviado para projetos ou empresas que o transformam em sabão ou biodiesel. Assim, evitamos a poluição dos rios e contribuímos para proteger o meio ambiente. Dessa forma, a Escola Dimas ajuda a construir um planeta mais limpo e consciente! 🌍♻️.`,
+
+          pilha: `Projeto Sustentável na Escola Dimas: Coleta de Óleo de Cozinha e Papa-Pilhas
+
+Na Escola Dimas, acreditamos que pequenas ações podem fazer uma grande diferença na preservação do meio ambiente. Por isso, promovemos iniciativas simples, mas muito importantes, como a coleta de óleo de cozinha usado e o projeto Papa-Pilhas.
+
+A coleta de óleo é feita de forma organizada para evitar que o óleo seja descartado no ralo ou no lixo comum, o que pode contaminar rios e prejudicar o meio ambiente. Os alunos e funcionários podem levar o óleo usado de casa em garrafas PET bem fechadas e entregá-las no ponto de coleta da escola, que fica na secretaria, em uma sala especialmente preparada para isso. Além disso, quem participa dessa ação também pode fazer uma troca: entrega o óleo e leva um detergente. Todo esse óleo recolhido é enviado para projetos que o transformam em sabão ou biodiesel, ajudando a reduzir a poluição e cuidando do nosso planeta.                                                                                                                                                                                                                       
+
+O projeto Papa-Pilhas foi criado para incentivar o descarte correto de pilhas e baterias usadas, que possuem substâncias químicas tóxicas capazes de contaminar a água, o terra e o ar, além de representar riscos à nossa saúde. Através dessa iniciativa, a Escola Dimas busca conscientizar alunos e toda a comunidade sobre a importância de não jogar esses materiais no lixo comum. O ponto de coleta fica na própria escola, facilitando que todos possam descartar esses objetos de forma segura e sustentável.
+
+Com ações como essa, a Escola Dimas ajuda a promover um planeta mais limpo e consciente, cuidando do meio ambiente tanto dentro quanto fora da escola. 🌍♻️🔋`,
+
+          rio: `🌊 Há um rio perto da escola que está cheio de lixo, o que causa mau cheiro, atrai insetos e prejudica o meio ambiente. Dentro da escola, muitos alunos ainda jogam lixo no chão, não separam os materiais recicláveis e parecem não perceber como essas atitudes podem afetar o clima e o planeta.
+
+Mas, afinal, qual seria a melhor estratégia para resolver esse problema?
+
+Podemos começar identificando que tipos de lixo estão presentes tanto no rio quanto na escola. Isso ajuda a entender melhor a situação e pensar em soluções mais eficazes.
+
+Depois, podemos promover campanhas de conscientização com os alunos, explicando por que é importante cuidar do meio ambiente e como pequenas atitudes fazem a diferença.
+
+Outra ideia legal é criar um grupo de monitoria ambiental, formado p próprios estudantes, para acompanhar e incentivar práticas mais responsáveis no dia a dia.
+
+Também é interessante propor ações sustentáveis na escola e na vizinhança, estimulando atitudes mais cuidadosas com o lixo e a natureza.
+
+E por que tudo isso é tão importante? Essas ações têm o objetivo de despertar nos alunos uma maior consciência ambiental e colocar em prática atividades que ajudem a reduzir o lixo no rio e na escola, contribuindo para um planeta mais saudável e equilibrado.
+
+<div class="image-container">
+
+  <img src="https://i.imgur.com/IWrldkm.jpeg" alt="Imagem do Rio Limpo 1">
+
+  <img src="https://i.imgur.com/iVJE8Vq.jpeg" alt="Imagem do Rio Limpo 2">
+
+  <img src="https://i.imgur.com/BnNcZUp.jpeg" alt="Imagem do Rio Limpo 3">
+
+</div>`
+
+        }
+
+      },
+
+      energia: {
+
+        text: `ENERGIA LIMPA E RENOVÁVEL
+A escola Dimas é um exemplo de escola que t em mais energia limpa e renovável, e usa 100% dela. 
+Energia limpa e renovável é aquela energia que não é degradada, não polui o meio ambiente, que é obtida pelas fontes naturais como: água, biomassa, vento e o sol  e são inesgotáveis.  
+Ela é importante pois ajuda na redução dos gases do efeito estufa e do aquecimento global, contribui para a preservação do meio ambiente. 
+Além disso promove um futuro mais sustentável!
+<p style="text-align: center;">
+  Contamos com 48 placas fotovoltaicas instaladas que geram energia solar para a nossa estrutura. Essa operação é feita em parceria com a CPFL, garantindo o fornecimento eficiente e sustentável de energia.
+</p>
+
+<div style="text-align: center; margin-top: 20px;">
+  <img src="https://i.imgur.com/ffUsN1c.jpeg" alt="Energia Solar" style="max-width: 100%; height: auto;" />
+</div>`
+
+      },
+
+      compostagem: {
+
+        text: `🌱 Projeto Composteira na Escola<br><br>
+
+<strong>1. Pra quê?</strong><br>
+
+Na escola, a gente acaba jogando fora muitos restos de frutas e legumes. A ideia é usar esse “lixo” pra fazer adubo, que vai ajudar a horta a crescer e ainda pode ser doado pra quem mora perto da escola.<br><br>
+
+<strong>2. O que vamos fazer?</strong><br>
+
+Vamos colocar um lixo só pra esses restos no refeitório e construir uma composteira com baldes que a gente consiga reaproveitar. Assim, o “lixo” vira adubo!<br><br>
+
+<strong>3.Por que isso é importante?</strong><br>
+
+Porque assim todo mundo aprende como cuidar melhor do lixo orgânico e a gente cria o hábito de ajudar o meio ambiente.<br><br>
+
+<strong>4. Quem vai fazer?</strong><br>
+
+Os alunos, as funcionárias da cozinha e toda a equipe da escola vão trabalhar juntos pra fazer isso acontecer.<br><br>
+
+<strong>5. Quando e como?</strong><br>
+
+A gente vai começar em agosto. Primeiro, vamos conseguir os baldes pra montar a composteira. Depois, colocamos os lixeiros especiais no refeitório pra coletar os restos todo dia. Depois de uns 40 dias, já teremos adubo prontinho!<br><br>
+
+<strong>6. Quanto vai custar?</strong><br>
+
+Vai gastar pouco, porque usamos coisas que já temos ou que podem ser doadas, e os restos de comida da própria escola.`
+
+      }
+
+    };
+
+    let currentMainTopic = "";
+
+    let currentSubtopic = null;
+
+    function showContent(topic) {
+
+      const data = explanations[topic];
+
+      if (!data) return;
+
+      currentMainTopic = topic;
+
+      currentSubtopic = null;
+
+      let extraHTML = "";
+
+      if (data.videos) {
+
+        extraHTML += `<div class="video-container">`;
+
+        data.videos.forEach(link => {
+
+          extraHTML += `<iframe src="${link}" allowfullscreen loading="lazy"></iframe>`;
+
+        });
+
+        extraHTML += `</div>`;
+
+      }
+
+      if (data.images) {
+
+        extraHTML += `<div class="image-container">`;
+
+        data.images.forEach(link => {
+
+          extraHTML += `<img src="${link}" alt="Imagem do projeto">`;
+
+        });
+
+        extraHTML += `</div>`;
+
+      }
+
+      if (data.subtopics) {
+
+        extraHTML += `<div class="mini-buttons">`;
+
+        for (const key in data.subtopics) {
+
+          const label = document.createElement('div');
+
+          let labelText = {
+
+            vila: "🏘️ Bairro Vila S. Vicente",
+
+            arvore: "🌳 Árvore/Papel",
+
+            jardim: "🏫 Jardim da Escola",
+
+            oleo: "🛢️ Óleo",
+
+            pilha: "🔋 Papa Pilha",
+
+            rio: "🌊 Rio Limpo",
+
+            cano: "🧰 Cano PVC"
+
+          }[key] || key;
+
+          extraHTML += `<button onclick="showSubContent('${key}', this)">${labelText}</button>`;
+
+        }
+
+        extraHTML += `</div>`;
+
+      }
+
+      content.innerHTML = `<h2>${document.querySelector('button[data-topic="' + topic + '"]').textContent}</h2><p>${data.text}</p>${extraHTML}`;
+
+      content.style.display = 'block';
+
+      buttonsContainer.style.display = 'none';
+
+      description.style.display = 'none';
+
+      title.style.display = 'none';
+
+      backBtn.style.display = 'inline-block';
+
+    }
+
+    function showSubContent(subKey, button) {
+
+      const subtext = explanations[currentMainTopic].subtopics[subKey];
+
+      if (!subtext) return;
+
+      currentSubtopic = subKey;
+
+      content.innerHTML = `<h2>${button.textContent}</h2><p>${subtext}</p>`;
+
+    }
+
+    function showHome() {
+
+      content.style.display = 'none';
+
+      buttonsContainer.style.display = 'flex';
+
+      description.style.display = 'block';
+
+      title.style.display = 'block';
+
+      backBtn.style.display = 'none';
+
+      content.innerHTML = '';
+
+      currentMainTopic = "";
+
+      currentSubtopic = null;
+
+    }
+
+    backBtn.addEventListener('click', () => {
+
+      if (currentSubtopic !== null) {
+
+        showContent(currentMainTopic);
+
+      } else if (currentMainTopic !== "") {
+
+        showHome();
+
+      }
+
+    });
+
+    buttonsContainer.addEventListener('click', (e) => {
+
+      if (e.target.tagName === 'BUTTON') {
+
+        const topic = e.target.getAttribute('data-topic');
+
+        showContent(topic);
+
+      }
+
+    });
+
+  </script>
+
+</body>
+
+</html>
